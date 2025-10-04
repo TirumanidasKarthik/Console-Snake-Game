@@ -62,7 +62,7 @@ class Board:
         self.snake = snake
         self.initializeSnake()
         self.food_position = None
-        self.last_food_position = None
+        self.last_food_position = deque()
         self.generateFood()
     
     def generateFood(self):
@@ -80,7 +80,7 @@ class Board:
     
     def checkFoodEaten(self):
         if self.snake.positions[0] == self.food_position:
-            self.last_food_position = self.food_position
+            self.last_food_position.append(self.food_position)
             self.generateFood()
 
     def resetCursor(self) -> None:
@@ -118,7 +118,7 @@ def clearTerminal():
     else: # For Linux and Mac
         os.system("clear")
 
-def main():
+def initializeGame() -> Board:
     # Clear the terminal
     clearTerminal()
     # Hide the cursor
@@ -127,13 +127,21 @@ def main():
     board = Board(snake)
     print("")
     board.showGrid()
+    return board
+
+def main():
+    board = initializeGame()
     direction = None
     try:
         while True:
             board.snake.iters += 1
             if keyboard.is_pressed('k'):
-                print("Thank You!")
-                break
+                user_input = input("Press y to continue or any other key to exit: ")
+                if user_input and user_input.lower()[-1] == 'y':
+                    pass
+                else:
+                    print("Thank You!")
+                    break
             elif keyboard.is_pressed('w'):
                 if board.snake.direction != 'd':
                     direction = 'u'
@@ -152,15 +160,24 @@ def main():
                 board.snake.iters = 0
                 last_tail = board.snake.positions[-1]
                 board.snake.runSnake()
-                if board.last_food_position and board.last_food_position == last_tail:
-                    board.last_food_position = None
+                if board.last_food_position and board.last_food_position[0] == last_tail:
+                    board.last_food_position.popleft()
                     board.snake.positions.append(last_tail)
             board.checkFoodEaten()
             board.resetCursor()
             if not board.showGrid():
                 print("Game Over!")
                 print(f"your Score: {len(board.snake.positions)}")
-                break
+                user_input = input("Press y to continue or any other key to exit: ")
+                if user_input and user_input.lower()[-1] == 'y':
+                    board = initializeGame()
+                    direction = None
+                    continue
+                else:
+                    # Clear input buffer
+                    keyboard.clear_all_hotkeys()
+                    keyboard.unhook_all()
+                    break
             
     except:
         pass

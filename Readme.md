@@ -10,6 +10,7 @@ A simple snake game playable in the terminal, implemented in Python.
 - Game over detection (collision with wall `#` or snake body)
 - Works on Windows, Linux, and Mac
 - Cursor hiding for better gameplay experience
+- Option to restart or exit after game over or pressing `K`
 
 ## Requirements
 
@@ -41,6 +42,7 @@ python snake.py
 - Eat `$` to grow the snake.
 - Avoid hitting the walls (`#`) or the snake's own body.
 - Your score is the length of the snake.
+- After game over or pressing `K`, you can choose to restart or exit.
 
 ## Notes
 
