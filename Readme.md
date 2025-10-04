@@ -5,10 +5,11 @@ A simple snake game playable in the terminal, implemented in Python.
 ## Features
 
 - Playable in the console with WASD controls
-- Random food generation
-- Score tracking
-- Game over detection (collision with wall)
+- Random food generation (`$`)
+- Score tracking (snake length)
+- Game over detection (collision with wall `#` or snake body)
 - Works on Windows, Linux, and Mac
+- Cursor hiding for better gameplay experience
 
 ## Requirements
 
@@ -38,10 +39,11 @@ python snake.py
 ## Gameplay
 
 - Eat `$` to grow the snake.
-- Avoid hitting the walls (`#`).
+- Avoid hitting the walls (`#`) or the snake's own body.
 - Your score is the length of the snake.
 
 ## Notes
 
 - The game uses terminal cursor manipulation; best played in a standard terminal.
 - On some systems, running as administrator/root may be required for keyboard input.
+- The cursor is hidden during gameplay and restored when the game ends.

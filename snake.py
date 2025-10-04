@@ -46,6 +46,11 @@ class Snake:
         else:
             self.moveSnakeRight()
 
+    def checkBodyCollision(self) -> bool:
+        head = self.positions[0]
+        if head in list(self.positions)[1:]:
+            return True
+        return False
 
 class Board:
     rows = 15
@@ -97,7 +102,7 @@ class Board:
                 else:
                     print(" ", end="")
             print("")
-        return flag
+        return flag and not self.snake.checkBodyCollision()
 
 
 
@@ -122,6 +127,7 @@ def main():
     board = Board(snake)
     print("")
     board.showGrid()
+    direction = None
     try:
         while True:
             board.snake.iters += 1
@@ -130,17 +136,19 @@ def main():
                 break
             elif keyboard.is_pressed('w'):
                 if board.snake.direction != 'd':
-                    board.snake.direction = 'u'
+                    direction = 'u'
             elif keyboard.is_pressed('s'):
                 if board.snake.direction != 'u':
-                    board.snake.direction = 'd'
+                    direction = 'd'
             elif keyboard.is_pressed('a'):
                 if board.snake.direction != 'r':
-                    board.snake.direction = 'l'
+                    direction = 'l'
             elif keyboard.is_pressed('d'):
                 if board.snake.direction != 'l':
-                    board.snake.direction = 'r'
+                    direction = 'r'
             if board.snake.iters == board.snake.velocity:
+                if direction:
+                    board.snake.direction = direction
                 board.snake.iters = 0
                 last_tail = board.snake.positions[-1]
                 board.snake.runSnake()
